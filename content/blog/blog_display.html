@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Insight Bridge Analytics - Blog and latest information feed</title>
+  <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
+
+  <div id="includedContent"></div>
+  <style>
+    .container {
+      max-width: 950px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .blog {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 2.4rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.3s ease-in-out;
+    }
+    .blog:hover {
+      box-shadow: 0 2px 5px 8px rgba(0, 0, 0, 0.1);
+    }
+    .blog-image img {
+      width: 28rem;
+      height: 17rem;
+      border-radius: 4px;
+    }
+    .blog-details {
+      flex: 1;
+      padding: 1rem;
+    }
+    .blog-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+    .blog-title:hover{
+      color: #0069d8;
+    }
+
+    .blog-content{
+      color: #555;
+      font-size: 13.5px;
+      margin-bottom: 10px;
+    }
+
+    .blog-readmore {
+      display: block;
+      margin-top: 10px;
+      color: #007bff;
+      text-decoration: none;
+      transition: color 0.3s ease-in-out;
+    }
+
+    .blog-readmore:hover {
+      color: #0069d8;
+    }
+    .blog-readmore:visited {
+    color: blueviolet;  
+    }
+
+    .btn-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+      .btn {
+      margin-right: 10px;
+    }
+    .newslead{
+      color: #007bff;
+      font-size: 32px;
+      font-weight: 900;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    @media (max-width: 800px) {
+  .container {
+      max-width: 800px;
+    }
+  .blog, .blog:hover{
+      /* box-shadow: none; */
+      padding: 1.4rem;
+      box-sizing: border-box;
+    }
+    .blog-image img {
+      width: 24rem;
+      height: 16rem;
+    }
+}   
+@media (max-width: 700px) {
+  .container {
+      max-width: 700px;
+    }
+    .blog-image img {
+      width: 20rem;
+      height: 14rem;
+    }
+}   
+@media (max-width: 600px) {
+  .container {
+      max-width: 600px;
+    }
+    .blog-image img {
+      width: 16rem;
+      height: 10rem;
+    }
+    .blog, .blog:hover{
+      box-shadow: none;
+      padding: 0;
+    }
+}  
+@media (max-width: 430px) {
+  .container {
+      max-width: 430px;
+    }
+    .blog-image img {
+      width: 11rem;
+      height: 7rem;
+    }
+}  
+@media (max-width: 350px) {
+    .blog-image img {
+      width: 7rem;
+      height: 4rem;
+    }
+    .blog-title{
+      font-size: 0.85rem;
+    }
+    .blog-content{
+      font-size: 0.7rem;
+    }
+    
+}  
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="newslead"><center>News</center></h1>
+    <div id="blogContainer"></div>
+    <div class="btn-container">
+      <button id="prevBtn" class="btn btn-primary">Previous</button>
+      <button id="nextBtn" class="btn btn-primary">Next</button>
+    </div>
+  </div>
+
+  <script>
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "blogs.json", true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        var blogs = JSON.parse(xhr.responseText);
+        displayBlogs(blogs);
+      }
+    };
+    xhr.send();
+
+    function displayBlogs(blogs) {
+  var blogContainer = document.getElementById("blogContainer");
+  var prevBtn = document.getElementById("prevBtn");
+  var nextBtn = document.getElementById("nextBtn");
+
+  var currentPage = 0;
+  var blogsPerPage = 5;
+  var totalPages = Math.ceil(blogs.length / blogsPerPage);
+
+  function showBlogs(page) {
+    blogContainer.innerHTML = "";
+
+    var startIndex = blogs.length - (page * blogsPerPage);
+    var endIndex = startIndex - blogsPerPage;
+
+    for (var i = startIndex - 1; i >= endIndex; i--) {
+      if (i < 0) {
+        break;
+      }
+      // var reversedData = data.sort((a, b) => b.title.localeCompare(a.title));
+
+      var blog = blogs[i];
+      if (blog.visibility !== "Hidden" && blog.visibility !== "hidden" && blog.visibility !== "hide"  && blog.visibility !== "Hide") {
+        // Render only if visibility is not hidden
+        var blogElement = document.createElement("div");
+          var blogImage = document.createElement("div");
+          var blogDetails = document.createElement("div");
+
+          blogElement.classList.add("blog");
+          blogImage.classList.add("blog-image");
+          blogDetails.classList.add("blog-details");
+
+          var titleElement = document.createElement("h3");
+          titleElement.classList.add("blog-title");
+          titleElement.textContent = blog.title;
+
+          var contentElement = document.createElement("div");
+          contentElement.classList.add("blog-content");
+          contentElement.innerHTML = getSummary(blog.content, 20);
+
+          var imageElement = document.createElement("img");
+          imageElement.src = blog.image;
+
+          var readMoreLink = document.createElement("a");
+          readMoreLink.classList.add("blog-readmore");
+          readMoreLink.textContent = "Read More";
+          readMoreLink.href = "blog_details.html?id=" + i;
+
+          contentElement.appendChild(readMoreLink);
+          blogImage.appendChild(imageElement);
+          blogDetails.appendChild(titleElement);
+          blogDetails.appendChild(contentElement);
+          blogElement.appendChild(blogImage);
+          blogElement.appendChild(blogDetails);
+          blogContainer.appendChild(blogElement);
+        blogContainer.appendChild(blogElement);
+      }
+    }
+
+         
+        function getSummary(content, numWords) {
+          var words = String(content).split(" ");
+          var summary = words.slice(0, numWords).join(" ");
+          if (words.length > numWords) {
+            summary += "...";
+          }
+          return summary;
+        }
+
+        // Show or hide pagination buttons based on current page
+        if (currentPage === 0) {
+          prevBtn.style.display = "none";
+        } else {
+          prevBtn.style.display = "inline-block";
+        }
+
+        if (currentPage === totalPages - 1) {
+          nextBtn.style.display = "none";
+        } else {
+          nextBtn.style.display = "inline-block";
+        }
+      }
+
+      // Show initial blogs on page load
+      showBlogs(currentPage);
+
+      // Event listener for previous button
+      prevBtn.addEventListener("click", function () {
+        if (currentPage > 0) {
+          currentPage--;
+          showBlogs(currentPage);
+        }
+      });
+
+      // Event listener for next button
+      nextBtn.addEventListener("click", function () {
+        if (currentPage < totalPages - 1) {
+          currentPage++;
+          showBlogs(currentPage);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#includedContent").load("../nav/navigation.html");
+  });
+</script>

@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Livvic:ital,wght@1,600&family=Merriweather:wght@700&display=swap&family=Inter:wght@400&family=Righteous&display=swap');
+
+@font-face {
+    font-family: nico;
+    src: url(./fonts/NicoMoji-Regular.ttf);
+}
+
+@font-face {
+    font-family: lohit;
+    src: url(./fonts/lohit-bengali.ttf);
+}
+
+.navbar-nav {
+    grid-column-gap: 2rem;
+    margin-right: 3rem;
+}
+
+.brandname {
+    color: white;
+    font-size: 34px;
+    font-weight: 800;
+    font-family: 'nico', sans-serif;
+    letter-spacing: 6px;
+}
+.logo-img{
+    width: 45px;
+}
+
+.nav-link {
+    font-family: 'Righteous', cursive;
+}
+
