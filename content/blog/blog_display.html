@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Insight Bridge Analytics - Blog and latest information feed</title>
-  <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
+  <title>AetherData - Cutting-edge analytics solutions</title>
+  <link rel="shortcut icon" href="../icn/logo.png" type="image/x-icon">
 
   <div id="includedContent"></div>
   <style>
@@ -73,8 +73,9 @@
       color: #007bff;
       font-size: 32px;
       font-weight: 900;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Georgia, 'Times New Roman', Times, serif;
     }
+
     @media (max-width: 800px) {
   .container {
       max-width: 800px;
@@ -138,6 +139,7 @@
 <body>
   <div class="container">
     <h1 class="newslead"><center>News</center></h1>
+    <br>
     <div id="blogContainer"></div>
     <div class="btn-container">
       <button id="prevBtn" class="btn btn-primary">Previous</button>
@@ -175,8 +177,6 @@
       if (i < 0) {
         break;
       }
-      // var reversedData = data.sort((a, b) => b.title.localeCompare(a.title));
-
       var blog = blogs[i];
       if (blog.visibility !== "Hidden" && blog.visibility !== "hidden" && blog.visibility !== "hide"  && blog.visibility !== "Hide") {
         // Render only if visibility is not hidden
@@ -214,7 +214,6 @@
         blogContainer.appendChild(blogElement);
       }
     }
-
          
         function getSummary(content, numWords) {
           var words = String(content).split(" ");
@@ -241,7 +240,6 @@
 
       // Show initial blogs on page load
       showBlogs(currentPage);
-
       // Event listener for previous button
       prevBtn.addEventListener("click", function () {
         if (currentPage > 0) {
